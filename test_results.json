@@ -1,0 +1,180 @@
+{
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "avg_latency": 5.922
+  },
+  "tests": [
+    {
+      "test_id": 1,
+      "question": "How do I reverse a list in Python?",
+      "answer": "### Reversing a List in Python\n\nThere are several ways to reverse a list in Python. Here are a few approaches:\n\n#### 1. Using Slicing\n```python\nold_list = [1, 2, 3, 4, 5]\nnew_list = old_list[::-1]\nprint(new_list)  # [5, 4, 3, 2, 1]\n```\nThis method uses slicing with a step of -1 to create a new list with the elements in reverse order.\n\n#### 2. Using the `reversed()` Function\n```python\nold_list = [1, 2, 3, 4, 5]\nnew_list = list(reversed(old_list))\nprint(new_list)  # [5, 4, 3, 2, 1]\n```\nThis method uses the `reversed()` function to create a reversed iterator, which is then converted to a list using the `list()` function.\n\n#### 3. Using the `reverse()` Method\n```python\nold_list = [1, 2, 3, 4, 5]\nnew_list = old_list.copy()  # Create a copy of the original list\nnew_list.reverse()\nprint(new_list)  # [5, 4, 3, 2, 1]\n```\nThis method creates a copy of the original list and then uses the `reverse()` method to reverse the copy in place.\n\n### Trade-offs\n\n* Slicing is a concise and efficient way to reverse a list, but it creates a new list object.\n* Using the `reversed()` function is also efficient, but it requires converting the iterator to a list using the `list()` function.\n* Using the `reverse()` method is less efficient than slicing or using `reversed()`, but it can be useful when working with large lists and you want to avoid creating a new list object.\n\n### Note\n\nAll of these methods create a shallow copy of the original list, meaning that if the original list contains mutable objects, modifying those objects will affect both the original and reversed lists. If you need to create a deep copy of the list, you can use the `copy.deepcopy()` function.",
+      "sources": [
+        "Best way to create a \"reversed\" list in Python?",
+        "reverse() does not work on a Python literal?",
+        "Traverse a list in reverse order in Python",
+        "How do I reverse a part (slice) of a list in Python?",
+        "How can I reverse a list in python?"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 4.186,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 2,
+      "question": "What is the difference between a list and a tuple in Python?",
+      "answer": "The main difference between a list and a tuple in Python is that a list is mutable, while a tuple is immutable. \n\nHere's a comparison of the two:\n\n### Lists\n- Are mutable, meaning they can be changed after creation\n- Defined using square brackets `[]`\n- Can be used to store a collection of items that may need to be modified\n- Can be used as a stack or a queue\n- Can be used to store a collection of items that may need to be sorted or reversed\n\n### Tuples\n- Are immutable, meaning they cannot be changed after creation\n- Defined using parentheses `()`\n- Can be used to store a collection of items that should not be changed\n- Can be used as keys in dictionaries\n- Can be used to return multiple values from a function\n\nHere's an example of how to use lists and tuples in Python:\n```python\n# Create a list\nmy_list = [1, 2, 3]\nprint(my_list)  # Output: [1, 2, 3]\n\n# Modify the list\nmy_list.append(4)\nprint(my_list)  # Output: [1, 2, 3, 4]\n\n# Create a tuple\nmy_tuple = (1, 2, 3)\nprint(my_tuple)  # Output: (1, 2, 3)\n\n# Try to modify the tuple\ntry:\n    my_tuple[0] = 4\nexcept TypeError:\n    print(\"Tuples are immutable\")\n\n# Use a tuple as a key in a dictionary\nmy_dict = {(1, 2): \"value\"}\nprint(my_dict[(1, 2)])  # Output: value\n\n# Try to use a list as a key in a dictionary\ntry:\n    my_dict = {[1, 2]: \"value\"}\nexcept TypeError:\n    print(\"Lists are not hashable and cannot be used as dictionary keys\")\n```\nIn summary, use lists when you need to store a collection of items that may need to be modified, and use tuples when you need to store a collection of items that should not be changed. \n\nAdditionally, tuples can be used as keys in dictionaries and can be used to return multiple values from a function, while lists cannot. \n\nIt's also worth noting that there are cases where the use of a tuple is a must, such as when using tuples as keys in dictionaries or inserting tuples into sets. \n\nNamed tuples are another type of tuple that can be used to create lightweight objects with named fields. They are useful when you need to create a simple object with a few fields, but don't need the full functionality of a class. \n\nHere's an example of how to use named tuples:\n```python\nfrom collections import namedtuple\n\n# Create a named tuple\nPoint = namedtuple('Point', ['x', 'y'])\npoint = Point(1, 2)\nprint(point.x)  # Output: 1\nprint(point.y)  # Output: 2\n```",
+      "sources": [
+        "What is a tuple useful for?",
+        "Python: what is the difference between (1,2,3) and [1,2,3], and when should I use each?",
+        "What are \"named tuples\" in Python?",
+        "Append to a list defined in a tuple - is it a bug?",
+        "Cases where use of tuple is a must"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 4.125,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 3,
+      "question": "How do I sort a dictionary by value in Python?",
+      "answer": "### Sorting a Dictionary by Value in Python\n\nTo sort a dictionary by value in Python, you can use the `sorted()` function with a `key` argument. Since dictionaries are inherently orderless, you will get a sorted representation as a list of tuples.\n\n#### Sorting by Value\n\nYou can sort a dictionary by value using the following code:\n```python\nimport operator\n\n# Define a dictionary\nx = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}\n\n# Sort the dictionary by value\nsorted_x = sorted(x.items(), key=operator.itemgetter(1))\n\nprint(sorted_x)\n```\nThis will output:\n```python\n[(2, 1), (0, 0), (1, 2), (4, 3), (3, 4)]\n```\nAlternatively, you can use a lambda function as the `key` argument:\n```python\nsorted_x = sorted(x.items(), key=lambda x: x[1])\n```\n#### Sorting by Key\n\nIf you want to sort the dictionary by key instead, you can use the following code:\n```python\nimport operator\n\n# Define a dictionary\nx = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}\n\n# Sort the dictionary by key\nsorted_x = sorted(x.items(), key=operator.itemgetter(0))\n\nprint(sorted_x)\n```\nThis will output:\n```python\n[(0, 0), (1, 2), (2, 1), (3, 4), (4, 3)]\n```\n#### Sorting a Dictionary of Lists\n\nIf you have a dictionary with list values and you want to sort by a specific element in the list, you can use the following code:\n```python\nmyDict = {'item1': [7, 1, 9], 'item2': [8, 2, 3], 'item3': [9, 3, 11]}\n\n# Sort the dictionary by the third element in the list\nsorted_myDict = sorted(myDict.items(), key=lambda e: e[1][2])\n\nprint(sorted_myDict)\n```\nThis will output:\n```python\n[('item2', [8, 2, 3]), ('item1', [7, 1, 9]), ('item3', [9, 3, 11])]\n```\n#### Sorting by Multiple Keys\n\nIf you want to sort the dictionary by multiple keys, you can use a tuple as the `key` argument:\n```python\na = {'keyC': 1, 'keyB': 2, 'keyA': 1}\n\n# Sort the dictionary by descending value and then ascending key\nsorted_a = sorted(a.items(), key=lambda a: (-a[1], a[0]))\n\nprint(sorted_a)\n```\nThis will output:\n```python\n[('keyB', 2), ('keyA', 1), ('keyC', 1)]\n```",
+      "sources": [
+        "Sort a Python dictionary by value",
+        "How do I sort a list of dictionaries by values of the dictionary in Python?",
+        "Python: sorting a dictionary of lists",
+        "sort dict by value python",
+        "Python 2.5 dictionary 2 key sort"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 3.593,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 4,
+      "question": "How do I merge two dictionaries in Python?",
+      "answer": "### Merging Two Dictionaries in Python\nThere are several ways to merge two dictionaries in Python, depending on the desired outcome.\n\n#### 1. Merging with Priority\nIf you want to merge two dictionaries and give priority to the first dictionary in case of duplicate keys, you can use the `.update()` method:\n```python\nd1 = {'a': 1, 'b': 2}\nd2 = {'b': 1, 'c': 3}\nd2.update(d1)\nprint(d2)  # {'a': 1, 'c': 3, 'b': 2}\n```\nAlternatively, you can create a copy of the first dictionary and update it with the second dictionary:\n```python\nd1 = {'a': 1, 'b': 2}\nd2 = {'b': 1, 'c': 3}\nd3 = dict(d1)\nd3.update(d2)\nprint(d3)  # {'a': 1, 'b': 1, 'c': 3}\n```\n#### 2. Merging with Addition\nIf you want to merge two dictionaries and add the values of duplicate keys, you can use the `collections.Counter` class:\n```python\nfrom collections import Counter\nd1 = {'a': 1, 'b': 2, 'c': 3}\nd2 = {'b': 3, 'c': 4, 'd': 5}\nd3 = Counter(d1) + Counter(d2)\nprint(d3)  # Counter({'c': 7, 'b': 5, 'd': 5, 'a': 1})\n```\n#### 3. Merging with List Values\nIf you want to merge two dictionaries and store the values of duplicate keys in a list, you can use a dictionary comprehension:\n```python\nd1 = {'paul': 100, 'john': 80, 'ted': 34, 'herve': 10}\nd2 = {'paul': 'a', 'john': 'b', 'ted': 'c', 'peter': 'd'}\nd3 = {k: [d1.get(k), d2.get(k)] for k in set(d1) | set(d2)}\nprint(d3)  # {'paul': [100, 'a'], 'john': [80, 'b'], 'ted': [34, 'c'], 'herve': [10, None], 'peter': [None, 'd']}\n```\n#### 4. Merging with Single Expression\nIf you want to merge two dictionaries in a single expression, you can use the `dict()` constructor and the `items()` method:\n```python\nd1 = {'a': 1, 'b': 2}\nd2 = {'b': 10, 'c': 11}\nd3 = dict(d1.items() + d2.items())\nprint(d3)  # {'a': 1, 'c': 11, 'b': 10}\n```\nNote that in Python 3, you need to use the `list()` function to convert the `items()` method to a list:\n```python\nd3 = dict(list(d1.items()) + list(d2.items()))\n```",
+      "sources": [
+        "merging Python dictionaries",
+        "How do I merge dictionaries together in Python?",
+        "How to merge two Python dictionaries in a single expression?",
+        "Python append dictionary to dictionary",
+        "Is there any pythonic way to combine two dicts (adding values for keys that appear in both)?"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 3.846,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 5,
+      "question": "How do I remove duplicates from a list while preserving order?",
+      "answer": "### Removing Duplicates from a List while Preserving Order\n\nThere are several ways to remove duplicates from a list in Python while preserving the original order. Here are a few approaches:\n\n#### 1. Using a Set to Keep Track of Seen Elements\n\nThis approach uses a set to keep track of elements that have already been seen. It iterates over the list, adding each element to the set and the result list only if it hasn't been seen before.\n\n```python\ndef remove_duplicates(input_list):\n    seen = set()\n    output_list = []\n    for element in input_list:\n        if element not in seen:\n            output_list.append(element)\n            seen.add(element)\n    return output_list\n\n# Example usage:\ninput_list = [1, 2, 3, 2, 4, 5, 5, 6]\noutput_list = remove_duplicates(input_list)\nprint(output_list)  # Output: [1, 2, 3, 4, 5, 6]\n```\n\n#### 2. Using a List Comprehension with a Set\n\nThis approach uses a list comprehension to create a new list with unique elements. It uses a set to keep track of seen elements.\n\n```python\ndef remove_duplicates(input_list):\n    seen = set()\n    return [x for x in input_list if not (x in seen or seen.add(x))]\n\n# Example usage:\ninput_list = [1, 2, 3, 2, 4, 5, 5, 6]\noutput_list = remove_duplicates(input_list)\nprint(output_list)  # Output: [1, 2, 3, 4, 5, 6]\n```\n\n#### 3. Using an Ordered Set (Python 3.7+)\n\nIn Python 3.7 and later, dictionaries maintain their insertion order. This means that we can use a dictionary to keep track of seen elements and preserve the original order.\n\n```python\ndef remove_duplicates(input_list):\n    return list(dict.fromkeys(input_list))\n\n# Example usage:\ninput_list = [1, 2, 3, 2, 4, 5, 5, 6]\noutput_list = remove_duplicates(input_list)\nprint(output_list)  # Output: [1, 2, 3, 4, 5, 6]\n```\n\n### Trade-Offs\n\n*   The first approach has a time complexity of O(n), where n is the length of the input list. It uses a set to keep track of seen elements, which has an average time complexity of O(1) for lookups.\n*   The second approach also has a time complexity of O(n), but it uses a list comprehension, which can be faster than a for loop in some cases.\n*   The third approach has a time complexity of O(n) as well, but it uses a dictionary to keep track of seen elements, which has an average time complexity of O(1) for lookups.\n\nIn general, the choice of approach depends on the specific requirements of your use case. If you need to preserve the original order and don't mind using a set to keep track of seen elements, the first approach may be the best choice. If you prefer a more concise solution, the second approach may be a better fit. If you're using Python 3.7 or later, the third approach is a good option.",
+      "sources": [
+        "How do you remove duplicates from a list in whilst preserving order?",
+        "Python: How to remove all duplicate items from a list",
+        "How to make lists distinct?",
+        "Remove duplicates in a list while keeping its order (Python)",
+        "Removing duplicates in lists"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 3.836,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 6,
+      "question": "What is a Python decorator and how do I use it?",
+      "answer": "**What is a Python Decorator?**\n\nA Python decorator is a special type of function that can modify or extend the behavior of another function. It is a higher-level construct that allows you to add functionality to functions and methods at definition time.\n\n**How to Use a Python Decorator?**\n\nTo use a Python decorator, you need to define a function that takes another function as an argument and returns a new function that \"wraps\" the original function. The new function produced by the decorator is then called instead of the original function when it is invoked.\n\nHere is a simple example of a Python decorator:\n```python\ndef my_decorator(func):\n    def wrapper():\n        print(\"Something is happening before the function is called.\")\n        func()\n        print(\"Something is happening after the function is called.\")\n    return wrapper\n\n@my_decorator\ndef say_hello():\n    print(\"Hello!\")\n\nsay_hello()\n```\nThis will output:\n```\nSomething is happening before the function is called.\nHello!\nSomething is happening after the function is called.\n```\n**Class-Based Decorators**\n\nYou can also define decorators using classes. Here is an example:\n```python\nclass MyDecorator:\n    def __init__(self, func):\n        self.func = func\n\n    def __call__(self):\n        print(\"Something is happening before the function is called.\")\n        self.func()\n        print(\"Something is happening after the function is called.\")\n\n@MyDecorator\ndef say_hello():\n    print(\"Hello!\")\n\nsay_hello()\n```\nThis will produce the same output as the previous example.\n\n**Decorators with Parameters**\n\nYou can also define decorators that take parameters. Here is an example:\n```python\ndef my_decorator(arg):\n    def decorator(func):\n        def wrapper():\n            print(f\"Something is happening before the function is called with arg {arg}.\")\n            func()\n            print(f\"Something is happening after the function is called with arg {arg}.\")\n        return wrapper\n    return decorator\n\n@my_decorator(\"hello\")\ndef say_hello():\n    print(\"Hello!\")\n\nsay_hello()\n```\nThis will output:\n```\nSomething is happening before the function is called with arg hello.\nHello!\nSomething is happening after the function is called with arg hello.\n```\n**Chaining Decorators**\n\nYou can also chain multiple decorators together. Here is an example:\n```python\ndef make_bold(func):\n    def wrapper():\n        return \"<b>\" + func() + \"</b>\"\n    return wrapper\n\ndef make_italic(func):\n    def wrapper():\n        return \"<i>\" + func() + \"</i>\"\n    return wrapper\n\n@make_bold\n@make_italic\ndef say_hello():\n    return \"Hello!\"\n\nprint(say_hello())\n```\nThis will output:\n```\n<b><i>Hello!</i></b>\n```",
+      "sources": [
+        "Does Python have decorators in the standard library?",
+        "Whats the difference between Python decorators and Decorator Pattern?",
+        "Python Class Based Decorator with parameters that can decorate a method or a function",
+        "Function acting as both decorator and context manager in Python?",
+        "How to make a chain of function decorators in Python?"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 3.482,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 7,
+      "question": "What is the difference between __str__ and __repr__ in Python?",
+      "answer": "The difference between `__str__` and `__repr__` in Python is as follows:\n\n- `__str__` is used to return a human-readable string representation of an object, which is typically used for end-users. It's called by the `str()` built-in function and by the `print()` statement.\n- `__repr__` is used to return a string representation of an object that's useful for developers, ideally a valid Python expression that could be used to recreate the object. It's called by the `repr()` built-in function.\n\nHere's an example that demonstrates the difference:\n\n```python\nclass Point:\n    def __init__(self, x, y):\n        self.x, self.y = x, y\n\n    def __str__(self):\n        return f\"Point at ({self.x}, {self.y})\"\n\n    def __repr__(self):\n        return f\"Point(x={self.x}, y={self.y})\"\n\np = Point(1, 2)\nprint(str(p))  # Output: Point at (1, 2)\nprint(repr(p))  # Output: Point(x=1, y=2)\n```\n\nIn this example, `__str__` returns a human-readable string, while `__repr__` returns a string that could be used to recreate the object.\n\nIt's worth noting that if you only define `__repr__` and not `__str__`, the `__repr__` method will be used for both `str()` and `repr()` conversions. However, if you define both, `__str__` will be used for `str()` conversions and `__repr__` will be used for `repr()` conversions.\n\nAlso, as mentioned in the context, the backquote (`) is an alias for `repr()` in Python 2, but it's deprecated and has been removed in Python 3. It's recommended to use `repr()` instead.",
+      "sources": [
+        "What is the purpose of __str__ and __repr__ in Python?",
+        "Python: repr vs backquote",
+        "Difference between __str__ and __repr__ in Python",
+        "Purpose of Python's __repr__",
+        "Confused about __str__ in Python"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 11.652,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 8,
+      "question": "How do I use Python's *args and **kwargs?",
+      "answer": "### Using *args and **kwargs in Python\n\nIn Python, `*args` and `**kwargs` are used to pass a variable number of arguments to a function. \n\n#### *args\n\n`*args` is used to pass a non-keyworded, variable-length argument list. It is used to pass a variable number of arguments as a tuple.\n\n```python\ndef my_function(*args):\n    for arg in args:\n        print(arg)\n\nmy_function('Hello', 'World')\n```\n\n#### **kwargs\n\n`**kwargs` is used to pass a keyworded, variable-length argument list. It is used to pass a variable number of arguments as a dictionary.\n\n```python\ndef my_function(**kwargs):\n    for key, value in kwargs.items():\n        print(f\"{key} = {value}\")\n\nmy_function(name='John', age=30)\n```\n\n#### Using *args and **kwargs together\n\nYou can use `*args` and `**kwargs` together in a function definition. However, `*args` must come before `**kwargs`.\n\n```python\ndef my_function(*args, **kwargs):\n    for arg in args:\n        print(arg)\n    for key, value in kwargs.items():\n        print(f\"{key} = {value}\")\n\nmy_function('Hello', 'World', name='John', age=30)\n```\n\n#### Default arguments with *args and **kwargs\n\nIn Python 2.x, default arguments must come before `*args`. \n\n```python\ndef my_function(a, b=3, *args, **kwargs):\n    print(a, b, args, kwargs)\n\nmy_function(1)\nmy_function(1, 2)\nmy_function(1, 2, 'Hello', 'World', name='John', age=30)\n```\n\nIn Python 3.x, you can also use keyword-only arguments by placing them after `*args`.\n\n```python\ndef my_function(a, *args, b=3, **kwargs):\n    print(a, b, args, kwargs)\n\nmy_function(1)\nmy_function(1, b=2)\nmy_function(1, 'Hello', 'World', b=2, name='John', age=30)\n```\n\n#### Accessing **kwargs\n\nYou can access `**kwargs` like a dictionary. You can use the `get()` method to provide a default value if a key is not present.\n\n```python\ndef my_function(**kwargs):\n    name = kwargs.get('name', 'Unknown')\n    age = kwargs.get('age', 0)\n    print(name, age)\n\nmy_function(name='John', age=30)\nmy_function()\n```",
+      "sources": [
+        "Python 2.x - default arguments with *args and **kwargs",
+        "What is the correct way to document a **kwargs parameter?",
+        "Proper way to use **kwargs in Python",
+        "Understanding kwargs in Python",
+        "Passing a list of kwargs?"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 10.331,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 9,
+      "question": "How do I read a CSV file using pandas in Python?",
+      "answer": "To read a CSV file using pandas in Python, you can use the `pd.read_csv()` function. Here's a basic example:\n\n```python\nimport pandas as pd\n\n# Specify the path to your CSV file\npath = 'your_file.csv'\n\n# Read the CSV file\ndata = pd.read_csv(path)\n\n# Print the first few rows of the data\nprint(data.head())\n```\n\nIf your CSV file has issues with tokenizing data, you can use the `error_bad_lines=False` argument to skip over problematic lines:\n\n```python\ndata = pd.read_csv('your_file.csv', error_bad_lines=False)\n```\n\nIf your CSV file is being read from a URL or a string, you can use the `StringIO` object to read it:\n\n```python\nimport requests\nfrom io import StringIO\n\nr = requests.get('https://example.com/your_file.csv')\ndata = r.content\n\ndf = pd.read_csv(StringIO(data))\n```\n\nNote that the `StringIO` import has changed in Python 3, so make sure to use `from io import StringIO` instead of `from StringIO import StringIO`. \n\nAlso, if your file has space-separated values, you can use the `delim_whitespace=True` argument:\n\n```python\ndata = pd.read_csv('your_file.csv', delim_whitespace=True)\n```",
+      "sources": [
+        "Python Pandas Error tokenizing data",
+        "Getting Google Spreadsheet CSV into A Pandas Dataframe",
+        "How can I open an Excel file in Python?",
+        "how to read file with space separated values",
+        "How to read a .xlsx file using the pandas Library in iPython?"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 8.733,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    },
+    {
+      "test_id": 10,
+      "question": "How do I make an HTTP GET request in Python using the requests library?",
+      "answer": "To make an HTTP GET request in Python using the requests library, you can use the `requests.get()` function. \n\nHere is a basic example:\n```python\nimport requests\n\nurl = \"http://www.example.com/\"\nresponse = requests.get(url)\n\nprint(response.status_code)\nprint(response.content)\n```\nIf you need to add headers to your GET request, you can pass them in as a dictionary:\n```python\nimport requests\n\nurl = \"http://www.example.com/\"\nheaders = {\"content-type\": \"text\"}\nresponse = requests.get(url, headers=headers)\n\nprint(response.status_code)\nprint(response.content)\n```\nYou can also check the response status code and content as shown above.\n\nNote: The `requests` library is not part of the standard library, so you need to install it first using pip: `pip install requests`. \n\nAlternatively, you can use `urllib.request` from the standard library:\n```python\nimport urllib.request\n\nurl = \"http://www.example.com/\"\nf = urllib.request.urlopen(url)\nprint(f.read())\n```",
+      "sources": [
+        "Using headers with the Python requests library's get method",
+        "Python 3 Get HTTP page",
+        "Is there any way to do HTTP PUT in python",
+        "Whatâs the best way to get an HTTP response code from a URL?",
+        "How do I get JSON data from RESTful service using Python?"
+      ],
+      "model": "llama-3.3-70b-versatile",
+      "docs_retrieved": 5,
+      "latency_s": 5.439,
+      "status": "PASS",
+      "observation": "Answer returned successfully with sources."
+    }
+  ]
+}
