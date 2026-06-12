@@ -22,6 +22,20 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
+import os
+import zipfile
+
+# ─── Ensure Database is Unzipped BEFORE loading RAG pipeline ──────────────────
+ZIP_PATH = "chroma_db.zip"
+EXTRACT_PATH = "."
+DB_FOLDER = "chroma_db"
+
+if os.path.exists(ZIP_PATH) and not os.path.exists(DB_FOLDER):
+    print(f"📦 Unzipping {ZIP_PATH}...")
+    with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
+        zip_ref.extractall(EXTRACT_PATH)
+    print("✅ Unzipping complete.")
+
 import rag_chain   # Importing this triggers model/DB load at startup
 
 # ─── App state ────────────────────────────────────────────────────────────────
