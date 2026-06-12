@@ -182,7 +182,7 @@ We use the top **15,000 highest-scored** Python Q&As as our knowledge base.
 
 ## ?? Live Deployment
 
-The application is actively deployed on Hugging Face Spaces (fulfilling the BONUS requirement).
+The application is actively deployed on Hugging Face Spaces 
 
 **Deployed App URL:** [https://huggingface.co/spaces/akshat1409/python-qa-assistant](https://huggingface.co/spaces/akshat1409/python-qa-assistant)
 
