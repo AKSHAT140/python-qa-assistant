@@ -49,7 +49,7 @@ Assessment/
 ### 1. Clone and create virtual environment
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/python-qa-assistant.git
+git clone https://github.com/AKSHAT140/python-qa-assistant.git
 cd python-qa-assistant
 
 python -m venv venv
