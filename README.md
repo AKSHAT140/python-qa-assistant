@@ -184,7 +184,7 @@ We use the top **15,000 highest-scored** Python Q&As as our knowledge base.
 
 The application is actively deployed on Hugging Face Spaces (fulfilling the BONUS requirement).
 
-**Deployed App URL:** [https://huggingface.co/spaces/AKSHAT140/python-qa-assistant](https://huggingface.co/spaces/AKSHAT140/python-qa-assistant)
+**Deployed App URL:** [https://huggingface.co/spaces/akshat1409/python-qa-assistant](https://huggingface.co/spaces/akshat1409/python-qa-assistant)
 
 *(Note: Both the FastAPI backend and Streamlit UI run concurrently on the space.)*
 
