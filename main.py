@@ -27,7 +27,7 @@ import zipfile
 
 # ─── Ensure Database is Unzipped BEFORE loading RAG pipeline ──────────────────
 ZIP_PATH = "chroma_db.zip"
-EXTRACT_PATH = "."
+EXTRACT_PATH = "chroma_db"
 DB_FOLDER = "chroma_db"
 
 if os.path.exists(ZIP_PATH) and not os.path.exists(DB_FOLDER):
