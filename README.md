@@ -179,3 +179,12 @@ Source: https://www.kaggle.com/datasets/stackoverflow/pythonquestions
 - `Tags.csv` — Tags per question
 
 We use the top **15,000 highest-scored** Python Q&As as our knowledge base.
+
+## ?? Live Deployment
+
+The application is actively deployed on Hugging Face Spaces (fulfilling the BONUS requirement).
+
+**Deployed App URL:** [https://huggingface.co/spaces/AKSHAT140/python-qa-assistant](https://huggingface.co/spaces/AKSHAT140/python-qa-assistant)
+
+*(Note: Both the FastAPI backend and Streamlit UI run concurrently on the space.)*
+
