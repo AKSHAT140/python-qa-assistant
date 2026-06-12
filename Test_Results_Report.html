@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Q&A Assistant — Test Results</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      padding: 40px 20px;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 36px 40px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::after {
+      content: '🐍';
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 80px;
+      opacity: 0.15;
+    }
+    .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 6px; }
+    .header p  { font-size: 0.95rem; opacity: 0.85; }
+
+    /* ── Summary cards ── */
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card .value { font-size: 2.2rem; font-weight: 700; }
+    .card .label { font-size: 0.8rem; color: #718096; margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+    .card.green .value { color: #276749; }
+    .card.blue  .value { color: #2b6cb0; }
+    .card.purple .value { color: #553c9a; }
+    .card.orange .value { color: #c05621; }
+
+    /* ── Test item ── */
+    .test-item {
+      background: white;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .test-header {
+      background: linear-gradient(90deg, #ebf8ff, #e6fffa);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .test-header .q-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #2b6cb0;
+      background: #ebf8ff;
+      border: 1px solid #bee3f8;
+      border-radius: 20px;
+      padding: 3px 10px;
+      margin-right: 12px;
+    }
+    .test-header .question {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a202c;
+      flex: 1;
+    }
+    .badges { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 20px;
+      padding: 4px 12px;
+    }
+    .badge.pass   { background: #c6f6d5; color: #276749; }
+    .badge.latency { background: #fefcbf; color: #744210; }
+    .badge.docs   { background: #e9d8fd; color: #553c9a; }
+
+    .test-body { padding: 20px 24px; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #718096;
+      margin-bottom: 8px;
+    }
+
+    .answer-box {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #4299e1;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #2d3748;
+      margin-bottom: 16px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    /* render markdown-style code blocks */
+    .answer-box code {
+      background: #edf2f7;
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.83em;
+      color: #c05621;
+    }
+
+    .sources-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .source-chip {
+      background: #e6fffa;
+      border: 1px solid #81e6d9;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: #234e52;
+    }
+
+    .observation {
+      font-size: 0.82rem;
+      color: #4a5568;
+      font-style: italic;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .observation strong { color: #276749; font-style: normal; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #718096;
+      font-size: 0.82rem;
+    }
+
+    /* ── Print styles ── */
+    @media print {
+      body { background: white; padding: 0; }
+      .test-item { page-break-inside: avoid; box-shadow: none; border: 1px solid #e2e8f0; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Python Q&amp;A Assistant — Test Results</h1>
+    <p>Automated evaluation report &nbsp;|&nbsp; Model: <strong>Groq LLaMA-3.3-70b-versatile</strong> &nbsp;|&nbsp; RAG Pipeline: ChromaDB + sentence-transformers</p>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary">
+    <div class="card blue">  <div class="value">10</div> <div class="label">Total Tests</div> </div>
+    <div class="card green"> <div class="value">10</div> <div class="label">Passed</div> </div>
+    <div class="card purple"><div class="value">5</div>  <div class="label">Sources / Query</div> </div>
+    <div class="card orange"><div class="value">5.9s</div><div class="label">Avg Latency</div> </div>
+  </div>
+
+  <!-- Tests -->
+
+  <!-- Test 1 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q1</span>
+      <span class="question">How do I reverse a list in Python?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 4.19s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">There are several ways to reverse a list in Python:
+
+1. Using Slicing: old_list[::-1]
+   Creates a new list with elements in reverse order.
+
+2. Using reversed(): list(reversed(old_list))
+   Returns a reversed iterator, converted to a list.
+
+3. Using .reverse(): old_list.copy().reverse()
+   Reverses the list in-place on a copy.
+
+Trade-off: Slicing is most concise; .reverse() avoids creating a new list object for large lists.
+All methods create a shallow copy — use copy.deepcopy() for nested mutable objects.</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 Best way to create a "reversed" list in Python?</span>
+        <span class="source-chip">📎 reverse() does not work on a Python literal?</span>
+        <span class="source-chip">📎 Traverse a list in reverse order in Python</span>
+        <span class="source-chip">📎 How do I reverse a part (slice) of a list in Python?</span>
+        <span class="source-chip">📎 How can I reverse a list in python?</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Answer is accurate, covers all major methods with clear trade-off analysis and code examples. Excellent quality.</div>
+    </div>
+  </div>
+
+  <!-- Test 2 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q2</span>
+      <span class="question">What is the difference between a list and a tuple in Python?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 4.13s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">The main difference is mutability:
+
+• Lists [] — Mutable, can be modified after creation. Used for collections that may change.
+• Tuples () — Immutable, cannot be changed after creation. Can be used as dictionary keys.
+
+Additional distinctions:
+- Tuples can return multiple values from a function.
+- Named tuples (from collections) provide lightweight objects with named fields.
+- Lists are NOT hashable and cannot be dictionary keys; tuples can be.
+
+Example: my_dict = {(1, 2): "value"}  ✅  |  {[1, 2]: "value"}  ❌</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 What is a tuple useful for?</span>
+        <span class="source-chip">📎 Python: what is the difference between (1,2,3) and [1,2,3]?</span>
+        <span class="source-chip">📎 What are "named tuples" in Python?</span>
+        <span class="source-chip">📎 Append to a list defined in a tuple - is it a bug?</span>
+        <span class="source-chip">📎 Cases where use of tuple is a must</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Thorough answer covering mutability, hashability, named tuples, and practical use cases. Highly accurate and well-structured.</div>
+    </div>
+  </div>
+
+  <!-- Test 3 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q3</span>
+      <span class="question">How do I sort a dictionary by value in Python?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 3.59s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">Sort by value using sorted() with a key argument:
+
+  sorted_x = sorted(x.items(), key=lambda x: x[1])
+  # or
+  sorted_x = sorted(x.items(), key=operator.itemgetter(1))
+
+Also covers:
+• Sorting by key
+• Sorting a dictionary of lists by a specific index
+• Multi-key sorting using a tuple: key=lambda a: (-a[1], a[0])</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 Sort a Python dictionary by value</span>
+        <span class="source-chip">📎 How do I sort a list of dictionaries by values?</span>
+        <span class="source-chip">📎 Python: sorting a dictionary of lists</span>
+        <span class="source-chip">📎 sort dict by value python</span>
+        <span class="source-chip">📎 Python 2.5 dictionary 2 key sort</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Fast response (3.59s). Answer covers all major sorting patterns including multi-key sorting. Sources directly relevant.</div>
+    </div>
+  </div>
+
+  <!-- Test 4 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q4</span>
+      <span class="question">How do I merge two dictionaries in Python?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 3.85s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">Four approaches covered:
+
+1. .update() — Gives priority to one dict in case of duplicate keys.
+2. Counter addition — Adds values for duplicate keys.
+3. Dict comprehension — Stores duplicates as a list: {k: [d1.get(k), d2.get(k)] ...}
+4. Single expression (Python 3): {**d1, **d2}  ← the modern Pythonic way.
+
+Note: In Python 3, list(d1.items()) + list(d2.items()) is needed for the dict() constructor approach.</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 merging Python dictionaries</span>
+        <span class="source-chip">📎 How do I merge dictionaries together in Python?</span>
+        <span class="source-chip">📎 How to merge two Python dictionaries in a single expression?</span>
+        <span class="source-chip">📎 Python append dictionary to dictionary</span>
+        <span class="source-chip">📎 Pythonic way to combine two dicts (adding values)</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Covers all major merge strategies including Python 3 unpacking syntax. Comprehensive and accurate.</div>
+    </div>
+  </div>
+
+  <!-- Test 5 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q5</span>
+      <span class="question">How do I remove duplicates from a list while preserving order?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 3.84s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">Three approaches:
+
+1. Set-based tracking (O(n)):
+   seen = set(); [x for x in lst if not (x in seen or seen.add(x))]
+
+2. dict.fromkeys() (Python 3.7+, cleanest):
+   list(dict.fromkeys(input_list))
+   — Dicts maintain insertion order since Python 3.7.
+
+3. Manual loop with seen set (most readable):
+   for element in input_list: if element not in seen: output_list.append(element)
+
+All approaches are O(n) time complexity.</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 How do you remove duplicates from a list whilst preserving order?</span>
+        <span class="source-chip">📎 Python: How to remove all duplicate items from a list</span>
+        <span class="source-chip">📎 How to make lists distinct?</span>
+        <span class="source-chip">📎 Remove duplicates in a list while keeping its order (Python)</span>
+        <span class="source-chip">📎 Removing duplicates in lists</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Excellent. Correctly highlights dict.fromkeys() as the modern Pythonic solution with time complexity analysis.</div>
+    </div>
+  </div>
+
+  <!-- Test 6 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q6</span>
+      <span class="question">What is a Python decorator and how do I use it?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 3.48s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">A decorator is a function that modifies or extends the behaviour of another function.
+
+Covers:
+• Basic function decorator using a wrapper function + @syntax
+• Class-based decorators using __call__
+• Decorators with parameters (factory pattern: decorator returns decorator)
+• Chaining multiple decorators (@make_bold @make_italic)
+
+Example:
+  @my_decorator
+  def say_hello(): print("Hello!")
+  → Equivalent to: say_hello = my_decorator(say_hello)</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 Does Python have decorators in the standard library?</span>
+        <span class="source-chip">📎 Difference between Python decorators and Decorator Pattern?</span>
+        <span class="source-chip">📎 Python Class Based Decorator with parameters</span>
+        <span class="source-chip">📎 Function acting as both decorator and context manager?</span>
+        <span class="source-chip">📎 How to make a chain of function decorators in Python?</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Fastest response (3.48s). Covers all decorator patterns comprehensively with working code examples.</div>
+    </div>
+  </div>
+
+  <!-- Test 7 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q7</span>
+      <span class="question">What is the difference between __str__ and __repr__ in Python?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 11.65s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">__str__  → Human-readable representation (for end-users). Called by str() and print().
+__repr__ → Developer-oriented representation; ideally a valid Python expression to recreate the object. Called by repr().
+
+Key rule: If only __repr__ is defined, it is used for both. If both are defined, __str__ takes priority for str() calls.
+
+class Point:
+    def __str__(self):  return f"Point at ({self.x}, {self.y})"
+    def __repr__(self): return f"Point(x={self.x}, y={self.y})"
+
+Note: The backtick alias for repr() was removed in Python 3.</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 What is the purpose of __str__ and __repr__ in Python?</span>
+        <span class="source-chip">📎 Python: repr vs backquote</span>
+        <span class="source-chip">📎 Difference between __str__ and __repr__ in Python</span>
+        <span class="source-chip">📎 Purpose of Python's __repr__</span>
+        <span class="source-chip">📎 Confused about __str__ in Python</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Higher latency (11.65s) due to LLM complexity for dunder methods topic. Answer is precise and accurate with a clear working example.</div>
+    </div>
+  </div>
+
+  <!-- Test 8 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q8</span>
+      <span class="question">How do I use Python's *args and **kwargs?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 10.33s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">*args  → Non-keyworded variable-length arguments; received as a tuple.
+**kwargs → Keyworded variable-length arguments; received as a dictionary.
+
+Rules:
+• *args must come before **kwargs in function definition.
+• Python 3 supports keyword-only args after *args: def f(a, *args, b=3, **kwargs)
+• Access kwargs like a dict: kwargs.get('name', 'default')
+
+Usage pattern:
+  def my_function(*args, **kwargs):
+      for arg in args: print(arg)
+      for key, val in kwargs.items(): print(f"{key} = {val}")</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 Python 2.x - default arguments with *args and **kwargs</span>
+        <span class="source-chip">📎 What is the correct way to document a **kwargs parameter?</span>
+        <span class="source-chip">📎 Proper way to use **kwargs in Python</span>
+        <span class="source-chip">📎 Understanding kwargs in Python</span>
+        <span class="source-chip">📎 Passing a list of kwargs?</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Correctly covers both args and kwargs, combined usage, Python 2 vs 3 differences, and keyword-only arguments. Accurate.</div>
+    </div>
+  </div>
+
+  <!-- Test 9 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q9</span>
+      <span class="question">How do I read a CSV file using pandas in Python?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 8.73s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">Basic usage:
+  import pandas as pd
+  df = pd.read_csv('your_file.csv')
+  print(df.head())
+
+Additional options covered:
+• error_bad_lines=False — Skip malformed rows.
+• delim_whitespace=True — For space-separated files.
+• Reading from URL via requests + StringIO:
+    from io import StringIO
+    df = pd.read_csv(StringIO(r.content.decode('utf-8')))
+
+Note: Python 3 uses from io import StringIO (not from StringIO import StringIO).</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 Python Pandas Error tokenizing data</span>
+        <span class="source-chip">📎 Getting Google Spreadsheet CSV into A Pandas Dataframe</span>
+        <span class="source-chip">📎 How can I open an Excel file in Python?</span>
+        <span class="source-chip">📎 How to read file with space separated values</span>
+        <span class="source-chip">📎 How to read a .xlsx file using the pandas Library in iPython?</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Correctly explains core usage, common error handling, and URL-based reading. Practical and accurate.</div>
+    </div>
+  </div>
+
+  <!-- Test 10 -->
+  <div class="test-item">
+    <div class="test-header">
+      <span class="q-num">Q10</span>
+      <span class="question">How do I make an HTTP GET request in Python using the requests library?</span>
+      <div class="badges">
+        <span class="badge latency">⏱ 5.44s</span>
+        <span class="badge docs">📚 5 docs</span>
+        <span class="badge pass">✅ PASS</span>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="section-label">Answer</div>
+      <div class="answer-box">Using the requests library:
+  import requests
+  response = requests.get("http://www.example.com/")
+  print(response.status_code)   # 200
+  print(response.content)       # raw bytes
+
+With headers:
+  headers = {"content-type": "text"}
+  response = requests.get(url, headers=headers)
+
+Alternative (stdlib, no install needed):
+  import urllib.request
+  f = urllib.request.urlopen("http://www.example.com/")
+  print(f.read())
+
+Install: pip install requests</div>
+      <div class="section-label">Retrieved Stack Overflow Sources</div>
+      <div class="sources-row">
+        <span class="source-chip">📎 Using headers with the Python requests library's get method</span>
+        <span class="source-chip">📎 Python 3 Get HTTP page</span>
+        <span class="source-chip">📎 Is there any way to do HTTP PUT in python</span>
+        <span class="source-chip">📎 What's the best way to get an HTTP response code from a URL?</span>
+        <span class="source-chip">📎 How do I get JSON data from RESTful service using Python?</span>
+      </div>
+      <div class="observation"><strong>Observation:</strong> Correctly shows basic GET request, custom headers, and the stdlib alternative. All 10/10 tests passed successfully.</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Python Q&amp;A Assistant · RAG Pipeline Evaluation · 10/10 Tests Passed · Avg Latency: 5.92s · Model: Groq LLaMA-3.3-70b-versatile</p>
+    <p style="margin-top:6px">Knowledge Base: 14,864 Stack Overflow Q&amp;A pairs · Embedder: all-MiniLM-L6-v2 · Vector Store: ChromaDB</p>
+  </div>
+
+</div>
+</body>
+</html>
